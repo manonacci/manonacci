@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MANONACCI V0.1</title>
+</head>
+
+<body>
+
+<h1>MANONACCI V0.1</h1>
+
+<p id="status">Standby...</p>
+
+<button onclick="startListening()">??? TALK TO MANONACCI</button>
+
+<p id="you"></p>
+<p id="naci"></p>
+
+<script>
+
+var recognition = new webkitSpeechRecognition();
+
+recognition.lang = "en-US";
+recognition.continuous = false;
+recognition.interimResults = false;
+
+recognition.onstart = function() {
+    document.getElementById("status").innerHTML = "Listening...";
+};
+
+recognition.onresult = function(event) {
+
+    var text = event.results[0][0].transcript;
+
+    document.getElementById("you").innerHTML =
+        "You: " + text;
+
+    respond(text);
+};
+
+recognition.onerror = function(event) {
+
+    document.getElementById("status").innerHTML =
+        "Microphone error: " + event.error;
+};
+
+recognition.onend = function() {
+
+    document.getElementById("status").innerHTML =
+        "Standby...";
+};
+
+function startListening() {
+
+    recognition.start();
+
+}
+
+function speak(text) {
+
+    var voice = new SpeechSynthesisUtterance(text);
+
+    voice.lang = "en-US";
+    voice.rate = 1.0;
+    voice.pitch = 1.0;
+
+    speechSynthesis.speak(voice);
+}
+
+function respond(text) {
+
+    var reply =
+        "Yes, Maznan. I heard you say: " + text;
+
+    document.getElementById("naci").innerHTML =
+        "MANONACCI: " + reply;
+
+    speak(reply);
+}
+
+</script>
+
+</body>
+</html>
